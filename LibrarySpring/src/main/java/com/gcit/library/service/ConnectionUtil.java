@@ -10,6 +10,7 @@ public class ConnectionUtil {
 	private static String url = "jdbc:mysql://localhost/library";
 	private static String driver = "com.mysql.cj.jdbc.Driver";
 	
+	@Deprecated
 	public static Connection getConnection() throws ClassNotFoundException, SQLException{
 		Class.forName(driver);
 		Connection conn = DriverManager.getConnection(url, usrName, password);
