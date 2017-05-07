@@ -1,6 +1,5 @@
 package com.gcit.library.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class PublisherDAO extends BaseDAO implements ResultSetExtractor<List<Pub
 	}
 
 	@Override
-	public List extractData(ResultSet rs) throws SQLException {
+	public List<Publisher> extractData(ResultSet rs) throws SQLException {
 		List<Publisher> publishers = new ArrayList<>();
 		while (rs.next()) {
 			Publisher a = new Publisher();
@@ -69,11 +68,11 @@ public class PublisherDAO extends BaseDAO implements ResultSetExtractor<List<Pub
 	}
 
 	public Integer getPublisherCount() throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_publisher", null);
+		return template.queryForObject("select count(*) as COUNT from tbl_publisher", Integer.class);
 	}
 
 	public Integer readPublishersCountByName(String publisherName) throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) from tbl_publisher where publisherName like ?", new Object[] { publisherName });
+		return template.queryForObject("select count(*) from tbl_publisher where publisherName like ?", new Object[] { publisherName }, Integer.class);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.gcit.library.dao;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.gcit.library.entity.Borrower;
@@ -16,6 +16,16 @@ import com.gcit.library.entity.Loan;
 
 public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 
+	
+	@Autowired
+	BookDAO bdao;
+	
+	@Autowired
+	BranchDAO brdao;
+	
+	@Autowired
+	BorrowerDAO bordao;
+	
 	public void addLoanBase(Loan loan) throws ClassNotFoundException, SQLException {
 		LocalDate due = LocalDate.now().plusDays(7);
 		Date dueDate = Date.valueOf(due);
@@ -61,27 +71,32 @@ public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 	}
 
 	@Override
-	public List<Loan> extractData(ResultSet rs) throws SQLException {
+	public List<Loan> extractData(ResultSet rs) throws SQLException{
 		List<Loan> loans = new ArrayList<>();
 		while (rs.next()) {
 			Loan a = new Loan();
-			a.setBook(bdao.readBookFromId(rs.getInt("bookId")));
-			a.setBorrower(bordao.readBorrowerByID(rs.getInt("cardNo")));
-			a.setBranch(brdao.readBranchByID(rs.getInt("branchId")));
-			a.setDateOut(rs.getTimestamp("dateOut").toLocalDateTime());
-			a.setDateDue(rs.getDate("dueDate").toLocalDate());
-			a.setDateIn(rs.getDate("dateIn").toLocalDate());
-			loans.add(a);
+			try {
+				a.setBook(bdao.readBookFromId(rs.getInt("bookId")));
+				a.setBorrower(bordao.readBorrowerByID(rs.getInt("cardNo")));
+				a.setBranch(brdao.readBranchByID(rs.getInt("branchId")));
+				a.setDateOut(rs.getTimestamp("dateOut").toLocalDateTime());
+				a.setDateDue(rs.getDate("dueDate").toLocalDate());
+				a.setDateIn(rs.getDate("dateIn").toLocalDate());
+				loans.add(a);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+	
 		}
 		return loans;
 	}
 
 	public Integer getLoanCount() throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_book_loans where dateIn IS NULL", null);
+		return template.queryForObject("select count(*) as COUNT from tbl_book_loans where dateIn IS NULL", Integer.class);
 	}
 	
 	public Integer getLoanCountByID(Borrower borrower) throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_book_loans where dateIn IS NULL and cardNo = ?", new Object[]{borrower.getCardNo()});
+		return template.queryForObject("select count(*) as COUNT from tbl_book_loans where dateIn IS NULL and cardNo = ?", new Object[]{borrower.getCardNo()}, Integer.class);
 	}
 
 	public Loan expandLoan(Loan loan) throws ClassNotFoundException, SQLException {

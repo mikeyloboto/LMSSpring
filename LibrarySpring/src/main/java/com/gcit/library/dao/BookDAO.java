@@ -1,20 +1,15 @@
 package com.gcit.library.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import com.gcit.library.entity.Author;
 import com.gcit.library.entity.Book;
 import com.gcit.library.entity.Branch;
 
-public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
+public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public void addBook(Book book) throws ClassNotFoundException, SQLException {
 		template.update("insert into tbl_book (title, pubId) values (?, ?)",
@@ -31,7 +26,8 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 	}
 
 	public void updateBook(Book book) throws ClassNotFoundException, SQLException {
-		template.update("update tbl_book set title = ? where bookId = ?", new Object[] { book.getTitle(), book.getBookId() });
+		template.update("update tbl_book set title = ? where bookId = ?",
+				new Object[] { book.getTitle(), book.getBookId() });
 	}
 
 	public void deleteBook(Book book) throws ClassNotFoundException, SQLException {
@@ -43,10 +39,18 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 		template.update("delete from tbl_book where bookId = ?", new Object[] { bookId });
 	}
 
-//	public Integer getBookCopies(Book book, Branch branch) throws ClassNotFoundException, SQLException {
-//		return readInt("select noOfCopies from tbl_book_copies where bookId = ? and branchId = ?",
-//				new Object[] { book.getBookId(), branch.getBranchNo() });
-//	}
+	public Integer getBookCopies(Book book, Branch branch) throws ClassNotFoundException, SQLException {
+		return template.queryForObject("select noOfCopies from tbl_book_copies where bookId = ? and branchId = ?",
+				new Object[] { book.getBookId(), branch.getBranchNo() }, Integer.class);
+	}
+
+	public List<Book> readBookListInBranch(Branch branch, Integer pageNo) {
+		setPageNo(pageNo);
+
+		return template.query(
+				"select * from tbl_book where bookId in (select bookId from tbl_book_copies where branchId = ?  and noOfCopies > 0)",
+				new Object[] { branch.getBranchNo() }, this);
+	}
 
 	@Override
 	public List<Book> extractData(ResultSet rs) throws SQLException {
@@ -67,7 +71,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 	}
 
 	public Book readBookFromId(Integer id) throws ClassNotFoundException, SQLException {
-		List<Book> books = read("select * from tbl_book where bookId = ?", new Object[] { id });
+		List<Book> books = template.query("select * from tbl_book where bookId = ?", new Object[] { id }, this);
 		if (books != null && !books.isEmpty()) {
 			return books.get(0);
 		}
@@ -75,7 +79,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 	}
 
 	public Integer readBookCount() throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_book", null);
+		return template.queryForObject("select count(*) as COUNT from tbl_book", Integer.class);
 	}
 
 	public void removeBookAuthors(Integer bookId) throws ClassNotFoundException, SQLException {
@@ -88,17 +92,19 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 	}
 
 	public Integer readBookCopiesCountInBranch(Branch branch) throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_book_copies where branchId = ? and noOfCopies > 0", new Object[]{branch.getBranchNo()});
+		return template.queryForObject(
+				"select count(*) as COUNT from tbl_book_copies where branchId = ? and noOfCopies > 0",
+				new Object[] { branch.getBranchNo() }, Integer.class);
 	}
 
 	public List<Book> readBookFromName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_book where title like ?", new Object[]{string}, this);
+		return template.query("select * from tbl_book where title like ?", new Object[] { string }, this);
 	}
 
 	public Integer readBookCountByName(String string) throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) from tbl_book where title like ?", new Object[]{string});
+		return template.queryForObject("select count(*) from tbl_book where title like ?", new Object[] { string },
+				Integer.class);
 	}
-
 
 }

@@ -1,6 +1,5 @@
 package com.gcit.library.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -52,12 +51,12 @@ public class BorrowerDAO extends BaseDAO implements ResultSetExtractor<List<Borr
 	}
 
 	public Integer readBorrowersCountByName(String string) throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) from tbl_borrower where name like ?", new Object[] { string });
+		return template.queryForObject("select count(*) from tbl_borrower where name like ?", new Object[] { string }, Integer.class);
 	}
 
 
 	@Override
-	public List extractData(ResultSet rs) throws SQLException {
+	public List<Borrower> extractData(ResultSet rs) throws SQLException {
 		List<Borrower> borrowers = new ArrayList<>();
 		while (rs.next()) {
 			Borrower a = new Borrower();
@@ -71,7 +70,7 @@ public class BorrowerDAO extends BaseDAO implements ResultSetExtractor<List<Borr
 	}
 
 	public Integer getBorrowerCount() throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_borrower", null);
+		return template.queryForObject("select count(*) as COUNT from tbl_borrower", Integer.class);
 	}
 
 

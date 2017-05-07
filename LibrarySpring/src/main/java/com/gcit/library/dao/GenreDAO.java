@@ -1,6 +1,5 @@
 package com.gcit.library.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,10 +7,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import com.gcit.library.entity.Author;
-import com.gcit.library.entity.Book;
 import com.gcit.library.entity.Genre;
-import com.gcit.library.entity.Publisher;
 
 public class GenreDAO extends BaseDAO implements ResultSetExtractor<List<Genre>>{
 
@@ -71,7 +67,7 @@ public class GenreDAO extends BaseDAO implements ResultSetExtractor<List<Genre>>
 	}
 
 	public Integer readGenreCount() throws ClassNotFoundException, SQLException {
-		return readInt("select count(*) as COUNT from tbl_genre", null);
+		return template.queryForObject("select count(*) as COUNT from tbl_genre", Integer.class);
 	}
 
 	public List<Genre> readGenresByName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {
@@ -81,7 +77,7 @@ public class GenreDAO extends BaseDAO implements ResultSetExtractor<List<Genre>>
 
 	public Integer readGenresCountByName(String string) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
-		return readInt("select count(*) from tbl_genre where genre_name like ?", new Object[]{string});
+		return template.queryForObject("select count(*) from tbl_genre where genre_name like ?", new Object[]{string}, Integer.class);
 	}
 
 }
