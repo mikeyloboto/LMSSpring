@@ -12,10 +12,6 @@ import com.gcit.library.entity.Author;
 
 
 public class AuthorDAO extends BaseDAO implements ResultSetExtractor<List<Author>>{
-	
-	public AuthorDAO(Connection conn) {
-
-	}
 
 	public void addAuthor(Author author) throws ClassNotFoundException, SQLException{
 		template.update("insert into tbl_author (authorName) values (?)", new Object[] {author.getAuthorName()});
