@@ -3,24 +3,12 @@
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.library.entity.Book"%>
 <%@page import="com.gcit.library.service.AdminService"%>
+<%@page import="org.springframework.beans.factory.annotation.Autowired" %>
 
 
 <%
-	AdminService service = new AdminService();
-	Integer bookCount = service.getBookCount();
-	Integer numOfPages = 0;
-	if (bookCount % 10 > 0) {
-		numOfPages = bookCount / 10 + 1;
-	} else {
-		numOfPages = bookCount / 10;
-	}
-	List<Book> books = new ArrayList<>();
-	//System.out.println(request.getParameter("pageNo"));
-	if (request.getParameter("pageNo") != null) {
-		books = service.getAllBooks(Integer.parseInt((String) request.getParameter("pageNo")));
-	} else {
-		books = service.getAllBooks(1);
-	}
+	Integer bookCount = (Integer)request.getAttribute("bookCount");
+	List<Book> books = (List<Book>)request.getAttribute("books");
 %>
 ${message}
 <script>
@@ -43,8 +31,6 @@ ${message}
 </script>
 <script>
 	function setPageNo(p) {
-		//var but = document.getElementById('#pageNo')
-		//but.value = p;
 		searchBook(p);
 	}
 </script>

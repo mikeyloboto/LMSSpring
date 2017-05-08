@@ -12,7 +12,8 @@ import com.gcit.library.entity.Branch;
 public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public void addBook(Book book) throws ClassNotFoundException, SQLException {
-		template.update("insert into tbl_book (title, pubId) values (?, ?)",
+		String query = "insert into tbl_book (title, pubId) values (?, ?)";
+		template.update(addLimit(query),
 				new Object[] { book.getTitle(), book.getPublisher().getPublisherId() });
 	}
 

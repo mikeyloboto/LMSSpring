@@ -17,4 +17,14 @@ public abstract class BaseDAO {
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
+	
+	protected String addLimit(String query) {
+		Integer index = 0;
+		if (getPageNo() != null) {
+			index = (getPageNo() - 1) * 10;
+		}
+		if (getPageNo() != null)
+			query = query + " LIMIT " + index + ", " + 10;
+		return query;
+	}
 }
