@@ -9,19 +9,43 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class AdminController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/adminManageBooks", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/adminAuthorManage", method = RequestMethod.GET)
+	public String manageAuthors(Locale locale, Model model) {
+		return "adminAuthorManage";
+	}
+	
+	@RequestMapping(value = "/adminBookManage", method = RequestMethod.GET)
 	public String manageBooks(Locale locale, Model model) {
-		return "adminManageBooks";
+		return "adminBookManage";
+	}
+	
+	@RequestMapping(value = "/adminBorrowerManage", method = RequestMethod.GET)
+	public String manageBorrowers(Locale locale, Model model) {
+		return "adminBorrowerManage";
+	}
+	
+	@RequestMapping(value = "/adminBranchManage", method = RequestMethod.GET)
+	public String manageBranches(Locale locale, Model model) {
+		return "adminBranchManage";
+	}
+	
+	@RequestMapping(value = "/adminGenreManage", method = RequestMethod.GET)
+	public String manageGenres(Locale locale, Model model) {
+		return "adminGenreManage";
+	}
+	
+	@RequestMapping(value = "/adminLoanManage", method = RequestMethod.GET)
+	public String manageLoans(Locale locale, Model model) {
+		return "adminLoanManage";
+	}
+	
+	@RequestMapping(value = "/adminPublisherManage", method = RequestMethod.GET)
+	public String managePublisher(Locale locale, Model model) {
+		return "adminPublisherManage";
 	}
 }

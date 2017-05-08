@@ -1,7 +1,7 @@
 <%@include file="include.html"%>
 
 <ol class="breadcrumb">
-	<li><a href="index.jsp">Home</a></li>
+	<li><a href="index">Home</a></li>
 	<li class="active">Administrator</li>
 </ol>
 
@@ -24,7 +24,7 @@
 					<p>Add / Delete / Modify Books</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminBookManage.jsp">Book Management</a>
+							href="adminBookManage">Book Management</a>
 					</p>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 					<p>Add / Delete / Modify Authors</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminAuthorManage.jsp">Author Management</a>
+							href="adminAuthorManage">Author Management</a>
 					</p>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 					<p>Add / Delete / Modify Genres</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminGenreManage.jsp">Genre Management</a>
+							href="adminGenreManage">Genre Management</a>
 					</p>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 					<p>Add / Delete / Modify Publishers</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminPublisherManage.jsp">Publisher Management</a>
+							href="adminPublisherManage">Publisher Management</a>
 					</p>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 					<p>Add / Delete / Modify Branches</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminBranchManage.jsp">Branch Management</a>
+							href="adminBranchManage">Branch Management</a>
 					</p>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 					<p>Add / Delete / Modify Borrowers</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminBorrowerManage.jsp">Borrower Management</a>
+							href="adminBorrowerManage">Borrower Management</a>
 					</p>
 				</div>
 			</div>
@@ -114,7 +114,7 @@
 					<p>Override Due Dates on Book Loans</p>
 					<p>
 						<a type="button" class="btn btn-primary"
-							href="adminLoanManage.jsp">Loan Override</a>
+							href="adminLoanManage">Loan Override</a>
 					</p>
 				</div>
 			</div>

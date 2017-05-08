@@ -320,7 +320,7 @@ public class AdminService {
 		return null;
 	}
 
-	@Transactional
+//	@Transactional
 	public Integer getBookCount() throws SQLException {
 		try {
 			return bdao.readBookCount();

@@ -54,6 +54,7 @@ public class LMSConfig {
 
 	@Bean
 	public BookDAO bdao() {
+		System.out.println("book bean");
 		return new BookDAO();
 	}
 
