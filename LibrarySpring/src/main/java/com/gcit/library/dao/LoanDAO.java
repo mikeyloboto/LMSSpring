@@ -62,12 +62,12 @@ public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 
 	public List<Loan> readAllLoans(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_book_loans where dateIn is null", this);
+		return template.query(addLimit("select * from tbl_book_loans where dateIn is null"), this);
 	}
 
 	public List<Loan> readLoansByCardNo(Integer cardNo, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_book_loans where cardNo = ? and dateIn is null", new Object[] { cardNo }, this);
+		return template.query(addLimit("select * from tbl_book_loans where cardNo = ? and dateIn is null"), new Object[] { cardNo }, this);
 	}
 
 	@Override

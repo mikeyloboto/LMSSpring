@@ -2,8 +2,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.gcit.library.entity.Book"%>
-<%@page import="com.gcit.library.service.AdminService"%>
-<%@page import="org.springframework.beans.factory.annotation.Autowired" %>
 
 
 <%

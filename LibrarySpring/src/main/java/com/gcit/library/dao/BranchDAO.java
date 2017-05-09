@@ -54,12 +54,12 @@ public class BranchDAO extends BaseDAO implements ResultSetExtractor<List<Branch
 
 	public List<Branch> readAllBranches(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_library_branch", this);
+		return template.query(addLimit("select * from tbl_library_branch"), this);
 	}
 
 	public List<Branch> readBranchesByName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_library_branch where branchName like ?", new Object[]{string}, this);
+		return template.query(addLimit("select * from tbl_library_branch where branchName like ?"), new Object[]{string}, this);
 	}
 
 	public Integer readBranchesCountByName(String string) throws ClassNotFoundException, SQLException {

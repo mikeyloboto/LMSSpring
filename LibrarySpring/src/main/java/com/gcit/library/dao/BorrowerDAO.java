@@ -33,7 +33,7 @@ public class BorrowerDAO extends BaseDAO implements ResultSetExtractor<List<Borr
 
 	public List<Borrower> readAllBorrowers(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_borrower", this);
+		return template.query(addLimit("select * from tbl_borrower"), this);
 	}
 
 	public Borrower readBorrowerByID(Integer borrowerID) throws ClassNotFoundException, SQLException {
@@ -47,7 +47,7 @@ public class BorrowerDAO extends BaseDAO implements ResultSetExtractor<List<Borr
 
 	public List<Borrower> readBorrowersByName(String borrowerName, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_borrower where name like ?", new Object[] { borrowerName }, this);
+		return template.query(addLimit("select * from tbl_borrower where name like ?"), new Object[] { borrowerName }, this);
 	}
 
 	public Integer readBorrowersCountByName(String string) throws ClassNotFoundException, SQLException {

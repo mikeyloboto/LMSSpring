@@ -46,7 +46,7 @@ public class GenreDAO extends BaseDAO implements ResultSetExtractor<List<Genre>>
 
 	public List<Genre> readAllGenres(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_genre", this);
+		return template.query(addLimit("select * from tbl_genre"), this);
 
 	}
 
@@ -72,12 +72,16 @@ public class GenreDAO extends BaseDAO implements ResultSetExtractor<List<Genre>>
 
 	public List<Genre> readGenresByName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_genre where genre_name like ?", new Object[]{string}, this);
+		return template.query(addLimit("select * from tbl_genre where genre_name like ?"), new Object[]{string}, this);
 	}
 
 	public Integer readGenresCountByName(String string) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		return template.queryForObject("select count(*) from tbl_genre where genre_name like ?", new Object[]{string}, Integer.class);
+	}
+
+	public List<Genre> readAllGenresForBook(Integer bookId) {
+		return template.query("select * from tbl_genre where genre_id in (select genre_id from tbl_book_genres where bookId = ?)", new Object[]{bookId}, this);
 	}
 
 }

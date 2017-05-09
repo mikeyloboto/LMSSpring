@@ -12,8 +12,7 @@ import com.gcit.library.entity.Branch;
 public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public void addBook(Book book) throws ClassNotFoundException, SQLException {
-		String query = "insert into tbl_book (title, pubId) values (?, ?)";
-		template.update(addLimit(query),
+		template.update("insert into tbl_book (title, pubId) values (?, ?)",
 				new Object[] { book.getTitle(), book.getPublisher().getPublisherId() });
 	}
 
@@ -67,7 +66,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public List<Book> readAllBooks(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_book", this);
+		return template.query(addLimit("select * from tbl_book"), this);
 
 	}
 
@@ -100,7 +99,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public List<Book> readBookFromName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_book where title like ?", new Object[] { string }, this);
+		return template.query(addLimit("select * from tbl_book where title like ?"), new Object[] { string }, this);
 	}
 
 	public Integer readBookCountByName(String string) throws ClassNotFoundException, SQLException {

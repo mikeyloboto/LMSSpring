@@ -34,7 +34,7 @@ public class PublisherDAO extends BaseDAO implements ResultSetExtractor<List<Pub
 
 	public List<Publisher> readAllPublishers(Integer pageNo) throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_publisher", this);
+		return template.query(addLimit("select * from tbl_publisher"), this);
 	}
 
 	public Publisher readPublisherByID(Integer PublisherID) throws ClassNotFoundException, SQLException {
@@ -49,7 +49,7 @@ public class PublisherDAO extends BaseDAO implements ResultSetExtractor<List<Pub
 	public List<Publisher> readPublishersByName(String PublisherName, Integer pageNo)
 			throws ClassNotFoundException, SQLException {
 		setPageNo(pageNo);
-		return template.query("select * from tbl_publisher where publisherName like ?", new Object[] { PublisherName },
+		return template.query(addLimit("select * from tbl_publisher where publisherName like ?"), new Object[] { PublisherName },
 				this);
 	}
 
@@ -73,6 +73,10 @@ public class PublisherDAO extends BaseDAO implements ResultSetExtractor<List<Pub
 
 	public Integer readPublishersCountByName(String publisherName) throws ClassNotFoundException, SQLException {
 		return template.queryForObject("select count(*) from tbl_publisher where publisherName like ?", new Object[] { publisherName }, Integer.class);
+	}
+
+	public Publisher readPublisherByBookId(Integer bookId) {
+		return template.query("select * from tbl_publisher where publisherId in (select pubId as publisherId from tbl_book where bookId = ?)", new Object[]{bookId}, this).get(0);
 	}
 
 }

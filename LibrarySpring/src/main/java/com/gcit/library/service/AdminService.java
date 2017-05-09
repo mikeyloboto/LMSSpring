@@ -133,7 +133,7 @@ public class AdminService {
 	@Transactional
 	public List<Book> getAllBooks(Integer pageNo) throws SQLException {
 		try {
-			return bdao.readAllBooks(pageNo);
+			return processAllBooks(bdao.readAllBooks(pageNo));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -193,7 +193,7 @@ public class AdminService {
 	@Transactional
 	public Book getBookFromID(Integer id) throws SQLException {
 		try {
-			return bdao.readBookFromId(id);
+			return processBook(bdao.readBookFromId(id));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -253,7 +253,8 @@ public class AdminService {
 	@Transactional
 	public List<Book> getBooksFromName(Integer pageNo, String searchString) throws SQLException {
 		try {
-			return bdao.readBookFromName("%" + searchString + "%", pageNo);
+			return processAllBooks(bdao.readBookFromName("%" + searchString + "%", pageNo));
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -577,5 +578,19 @@ public class AdminService {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private List<Book> processAllBooks(List<Book> books) {
+		for (Book b : books) {
+			processBook(b);
+		}
+		return books;
+	}
+	
+	private Book processBook(Book b) {
+		b.setAuthors(adao.readAllAuthorsForBook(b.getBookId()));
+		b.setPublisher(pdao.readPublisherByBookId(b.getBookId()));
+		b.setGenres(gdao.readAllGenresForBook(b.getBookId()));
+		return b;
 	}
 }
