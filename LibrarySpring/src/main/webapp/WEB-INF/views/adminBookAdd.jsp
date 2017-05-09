@@ -1,18 +1,3 @@
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Author"%>
-<%@page import="com.gcit.library.entity.Book"%>
-<%@page import="com.gcit.library.entity.Genre"%>
-<%@page import="com.gcit.library.entity.Publisher"%>
-<%@page import="com.gcit.library.service.AdminService"%>
-<%
-	AdminService service = new AdminService();
-	List<Author> authors = service.getAllAuthors(null);
-	List<Genre> genres = service.getAllGenres(null);
-	List<Publisher> publishers = service.getAllPublishers(null);
-	//Integer bookId = Integer.parseInt(request.getParameter("bookId"));
-	//Book book = service.getBookFromID(bookId);
-	//System.out.println("New Modal Init");
-%>
 <div>
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
@@ -29,33 +14,14 @@
 			<!-- Put shite here -->
 			<p>Select Author(s):</p>
 			<select multiple class="form-control" name="authors">
-				<%
-					for (Author a : authors) {
-				%>
-				<option value="<%=a.getAuthorId()%>"><%=a.getAuthorName()%></option>
-				<%
-					}
-				%>
+				${authors}
 			</select> <br />
 			<p>Select Genre(s):</p>
 			<select multiple class="form-control" name="genres">
-				<%
-					for (Genre g : genres) {
-				%>
-				<option value="<%=g.getGenreId()%>"><%=g.getGenreName()%></option>
-				<%
-					}
-				%>
+				${genres}
 			</select> <br />
 			<p>Select Publisher:</p>
-			<select class="form-control" name="publisher">
-				<%
-					for (Publisher p : publishers) {
-				%>
-				<option value="<%=p.getPublisherId()%>"><%=p.getPublisherName()%></option>
-				<%
-					}
-				%>
+			<select class="form-control" name="publisher"> ${publishers}
 			</select> <br /> <br>
 			<div class="alert alert-info" role="alert">
 				<strong>Hint,</strong> you can use "Ctrl" button to select multiple

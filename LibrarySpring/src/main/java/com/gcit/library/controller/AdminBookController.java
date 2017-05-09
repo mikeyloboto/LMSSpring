@@ -1,6 +1,7 @@
 package com.gcit.library.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gcit.library.entity.Author;
 import com.gcit.library.entity.Book;
+import com.gcit.library.entity.Genre;
+import com.gcit.library.entity.Publisher;
 import com.gcit.library.service.AdminService;
 
 /**
@@ -26,52 +30,14 @@ public class AdminBookController {
 
 	@Autowired
 	AdminService adminService;
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	// protected void doGet(HttpServletRequest request, HttpServletResponse
-	// response)
-	// throws ServletException, IOException {
-	// String reqUrl =
-	// request.getRequestURI().substring(request.getContextPath().length(),
-	// request.getRequestURI().length());
-	// String forwardPath = "/adminBookManage.jsp";
-	// Boolean isAjax = Boolean.FALSE;
-	// switch (reqUrl) {
-	//
-	// case "/pageAuthors":
-	// // pageAuthors(request);
-	// forwardPath = "/adminBookManage.jsp";
-	// break;
-	// case "/searchBooks":
-	// // System.out.println("test");
-	// String table = searchBooks(request);
-	// String pagination = pageBooks(request);
-	// // response.setContentType("application/json");
-	// // response.setCharacterEncoding("UTF-8");
-	// response.getWriter().write(table + '\n' + pagination);
-	// // forwardPath = "/viewauthors.jsp";
-	// isAjax = Boolean.TRUE;
-	// break;
-	// case "/removeBook":
-	// removeBook(request);
-	// break;
-	// default:
-	// break;
-	// }
-	// if (!isAjax) {
-	// RequestDispatcher rd = request.getRequestDispatcher(forwardPath);
-	// rd.forward(request, response);
-	// }
-	// }
-
 	@RequestMapping(value = "/searchBooks", method = RequestMethod.GET)
-	public @ResponseBody String searchBook(@RequestParam("searchString") String searchString, @RequestParam("pageNo") Integer pageNo,
-			Locale locale, Model model) {
+	public @ResponseBody String searchBook(@RequestParam("searchString") String searchString,
+			@RequestParam("pageNo") Integer pageNo, Locale locale, Model model) {
 		String table = searchBooks(searchString, pageNo);
 		String pagination = pageBooks(searchString, pageNo);
-		model.addAttribute("table", table);
-		model.addAttribute("pagination", pagination);
-		System.out.println(searchString);
 		return table + '\n' + pagination;
 	}
 
@@ -102,7 +68,7 @@ public class AdminBookController {
 		StringBuffer strBuf = new StringBuffer();
 		try {
 			List<Book> books = adminService.getBooksFromName(pageNo, searchString);
-			System.out.println(books.size());
+			// System.out.println(books.size());
 			for (Book a : books) {
 				strBuf.append("<tr><td>" + (books.indexOf(a) + 1 + (pageNo - 1) * 10) + "</td><td>" + a.getDescription()
 						+ "</td>");
@@ -110,7 +76,7 @@ public class AdminBookController {
 
 				strBuf.append("<td><button type=\"button\" class=\"btn btn-primary\""
 						+ " data-toggle=\"modal\" data-target=\"#editBookModal\"" + " href=\"adminBookEdit?bookId="
-						+ a.getBookId() + "&pageNo=" + pageNo + "\">Update</button> ");
+						+ a.getBookId() + "\">Update</button> ");
 				strBuf.append("<a type=\"button\" class=\"btn btn-danger\"" + " href=\"removeBook?bookId="
 						+ a.getBookId() + "\">Delete</a></td></tr>");
 			}
@@ -119,149 +85,177 @@ public class AdminBookController {
 		}
 		return strBuf.toString();
 	}
-	//
-	// /**
-	// * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	// * response)
-	// */
-	// protected void doPost(HttpServletRequest request, HttpServletResponse
-	// response)
-	// throws ServletException, IOException {
-	// String reqUrl =
-	// request.getRequestURI().substring(request.getContextPath().length(),
-	// request.getRequestURI().length());
-	// String forwardPath = "/adminBookManage.jsp";
-	// switch (reqUrl) {
-	//
-	// case "/addBook":
-	// addBook(request);
-	// break;
-	// case "/editBook":
-	// editBook(request);
-	// break;
-	// case "/removeBook":
-	// removeBook(request);
-	// break;
-	// default:
-	// break;
-	// }
-	// RequestDispatcher rd = request.getRequestDispatcher(forwardPath);
-	// rd.forward(request, response);
-	// }
-	//
-	// private void removeBook(HttpServletRequest request) {
-	// // TODO Auto-generated method stub
-	// AdminService service = new AdminService();
-	// try {
-	// Integer bookId = Integer.parseInt((String)
-	// request.getParameter("bookId"));
-	// service.removeBook(bookId);
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-success\" role=\"alert\">
-	// <strong>Success!</strong> Book successfully deleted. </div>");
-	// } catch (NumberFormatException e) {
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong>
-	// Something went wrong. </div>");
-	// e.printStackTrace();
-	// } catch (SQLException e) {
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong>
-	// Something went wrong. </div>");
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// private void editBook(HttpServletRequest request) {
-	// Book book = new Book();
-	// book.setBookId(Integer.parseInt(request.getParameter("bookId")));
-	// book.setTitle(request.getParameter("bookName"));
-	// String[] authorIds = request.getParameterValues("authors");
-	// List<Author> authors = new ArrayList<>();
-	// if (authorIds != null && authorIds.length > 0) {
-	// for (int i = 0; i < authorIds.length; i++) {
-	// Author a = new Author();
-	// a.setAuthorId(Integer.parseInt(authorIds[i]));
-	// System.out.println("adding authorId " + authorIds[i]);
-	// authors.add(a);
-	// }
-	// }
-	//
-	// String[] genreIds = request.getParameterValues("genres");
-	// List<Genre> genres = new ArrayList<>();
-	// if (genreIds != null && genreIds.length > 0) {
-	//
-	// for (int i = 0; i < genreIds.length; i++) {
-	// Genre g = new Genre();
-	// g.setGenreId(Integer.parseInt(genreIds[i]));
-	// genres.add(g);
-	// }
-	// }
-	// Publisher pub = new Publisher();
-	// pub.setPublisherId(Integer.parseInt(request.getParameter("publisher")));
-	//
-	// book.setAuthors(authors);
-	// book.setGenres(genres);
-	// book.setPublisher(pub);
-	//
-	// AdminService service = new AdminService();
-	// try {
-	// service.modBook(book);
-	// } catch (SQLException e) {
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong>
-	// Something went wrong. </div>");
-	// e.printStackTrace();
-	// }
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-success\" role=\"alert\">
-	// <strong>Success!</strong> Book details successfully updated. </div>");
-	// }
-	//
-	// private void addBook(HttpServletRequest request) {
-	// // TODO Auto-generated method stub
-	// Book book = new Book();
-	// book.setTitle(request.getParameter("bookName"));
-	// String[] authorIds = request.getParameterValues("authors");
-	// List<Author> authors = new ArrayList<>();
-	// if (authorIds != null && authorIds.length > 0) {
-	// for (int i = 0; i < authorIds.length; i++) {
-	// Author a = new Author();
-	// a.setAuthorId(Integer.parseInt(authorIds[i]));
-	// System.out.println("adding authorId " + authorIds[i]);
-	// authors.add(a);
-	// }
-	// }
-	//
-	// String[] genreIds = request.getParameterValues("genres");
-	// List<Genre> genres = new ArrayList<>();
-	// if (genreIds != null && genreIds.length > 0) {
-	//
-	// for (int i = 0; i < genreIds.length; i++) {
-	// Genre g = new Genre();
-	// g.setGenreId(Integer.parseInt(genreIds[i]));
-	// genres.add(g);
-	// }
-	// }
-	// Publisher pub = new Publisher();
-	// pub.setPublisherId(Integer.parseInt(request.getParameter("publisher")));
-	//
-	// book.setAuthors(authors);
-	// book.setGenres(genres);
-	// book.setPublisher(pub);
-	//
-	// AdminService service = new AdminService();
-	// try {
-	// service.addBook(book);
-	// } catch (SQLException e) {
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong>
-	// Something went wrong. </div>");
-	// e.printStackTrace();
-	// }
-	// request.setAttribute("message",
-	// "<div class=\"alert alert-success\" role=\"alert\">
-	// <strong>Success!</strong> Book successfully added. </div>");
-	// }
+
+	@RequestMapping(value = "/adminBookAdd", method = RequestMethod.GET)
+	public String bookAddModal(Locale locale, Model model) {
+		try {
+			StringBuffer authorsBuffer = new StringBuffer();
+			for (Author a : adminService.getAllAuthors(null)) {
+				authorsBuffer.append("<option value=\"" + a.getAuthorId() + "\">" + a.getAuthorName() + "</option>");
+			}
+
+			StringBuffer genresBuffer = new StringBuffer();
+			for (Genre g : adminService.getAllGenres(null)) {
+				System.out.println(g.getGenreName());
+				genresBuffer.append("<option value=\"" + g.getGenreId() + "\">" + g.getGenreName() + "</option>");
+			}
+
+			StringBuffer publishersBuffer = new StringBuffer();
+			for (Publisher p : adminService.getAllPublishers(null)) {
+				publishersBuffer
+						.append("<option value=\"" + p.getPublisherId() + "\">" + p.getPublisherName() + "</option>");
+			}
+
+			model.addAttribute("authors", authorsBuffer.toString());
+			model.addAttribute("genres", genresBuffer.toString());
+			model.addAttribute("publishers", publishersBuffer.toString());
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "adminBookAdd";
+	}
+
+	@RequestMapping(value = "/adminBookEdit", method = RequestMethod.GET)
+	public String bookEditModal(@RequestParam("bookId") Integer bookId, Locale locale, Model model) {
+		try {
+			StringBuffer authorsBuffer = new StringBuffer();
+			for (Author a : adminService.getAllAuthors(null)) {
+				authorsBuffer.append("<option value=\"" + a.getAuthorId() + "\">" + a.getAuthorName() + "</option>");
+			}
+
+			StringBuffer genresBuffer = new StringBuffer();
+			for (Genre g : adminService.getAllGenres(null)) {
+				System.out.println(g.getGenreName());
+				genresBuffer.append("<option value=\"" + g.getGenreId() + "\">" + g.getGenreName() + "</option>");
+			}
+
+			StringBuffer publishersBuffer = new StringBuffer();
+			for (Publisher p : adminService.getAllPublishers(null)) {
+				publishersBuffer
+						.append("<option value=\"" + p.getPublisherId() + "\">" + p.getPublisherName() + "</option>");
+			}
+
+			model.addAttribute("book", adminService.getBookFromID(bookId));
+			model.addAttribute("authors", authorsBuffer.toString());
+			model.addAttribute("genres", genresBuffer.toString());
+			model.addAttribute("publishers", publishersBuffer.toString());
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "adminBookEdit";
+	}
+
+	@RequestMapping(value = "/removeBook", method = RequestMethod.GET)
+	private String removeBook(@RequestParam("bookId") Integer bookId, Locale locale, Model model) {
+		// TODO Auto-generated method stub
+		try {
+			adminService.removeBook(bookId);
+			model.addAttribute("message",
+					"<div class=\"alert alert-success\" role=\"alert\"><strong>Success!</strong> Book successfully deleted. </div>");
+		} catch (NumberFormatException e) {
+			model.addAttribute("message",
+					"<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong> Something went wrong. </div>");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			model.addAttribute("message",
+					"<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong> Something went wrong. </div>");
+			e.printStackTrace();
+		}
+		return "adminBookManage";
+	}
+
+	@RequestMapping(value = "/editBook", method = RequestMethod.POST)
+	private String editBook(@RequestParam("bookId") Integer bookId, @RequestParam("bookName") String bookName,
+			@RequestParam("authors") String authorIds[], @RequestParam("genres") String[] genreIds,
+			@RequestParam("publisher") Integer publisher, Locale locale, Model model) {
+		Book book = new Book();
+		book.setBookId(bookId);
+		book.setTitle(bookName);
+		List<Author> authors = new ArrayList<>();
+		if (authorIds != null && authorIds.length > 0) {
+			for (int i = 0; i < authorIds.length; i++) {
+				Author a = new Author();
+				a.setAuthorId(Integer.parseInt(authorIds[i]));
+				System.out.println("adding authorId " + authorIds[i]);
+				authors.add(a);
+			}
+		}
+
+		List<Genre> genres = new ArrayList<>();
+		if (genreIds != null && genreIds.length > 0) {
+
+			for (int i = 0; i < genreIds.length; i++) {
+				Genre g = new Genre();
+				g.setGenreId(Integer.parseInt(genreIds[i]));
+				genres.add(g);
+			}
+		}
+		Publisher pub = new Publisher();
+		pub.setPublisherId(publisher);
+
+		book.setAuthors(authors);
+		book.setGenres(genres);
+		book.setPublisher(pub);
+
+		try {
+			adminService.modBook(book);
+			model.addAttribute("message",
+					"<div class=\"alert alert-success\" role=\"alert\"> <strong>Success!</strong> Book details successfully updated. </div>");
+		} catch (SQLException e) {
+			model.addAttribute("message",
+					"<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong> Something went wrong. </div>");
+			e.printStackTrace();
+		}
+		return "adminBookManage";
+	}
+
+	@RequestMapping(value = "/addBook", method = RequestMethod.POST)
+	private String addBook(@RequestParam("bookName") String bookName, @RequestParam("authors") String[] authorIds,
+			@RequestParam("genres") String[] genreIds, @RequestParam("publisher") Integer publisher, Locale locale,
+			Model model) {
+		// TODO Auto-generated method stub
+		Book book = new Book();
+		book.setTitle(bookName);
+		List<Author> authors = new ArrayList<>();
+		if (authorIds != null && authorIds.length > 0) {
+			for (int i = 0; i < authorIds.length; i++) {
+				Author a = new Author();
+				a.setAuthorId(Integer.parseInt(authorIds[i]));
+				System.out.println("adding authorId " + authorIds[i]);
+				authors.add(a);
+			}
+		}
+
+		List<Genre> genres = new ArrayList<>();
+		if (genreIds != null && genreIds.length > 0) {
+
+			for (int i = 0; i < genreIds.length; i++) {
+				Genre g = new Genre();
+				g.setGenreId(Integer.parseInt(genreIds[i]));
+				genres.add(g);
+			}
+		}
+		Publisher pub = new Publisher();
+		pub.setPublisherId(publisher);
+
+		book.setAuthors(authors);
+		book.setGenres(genres);
+		book.setPublisher(pub);
+
+		try {
+			adminService.addBook(book);
+			model.addAttribute("message",
+					"<div class=\"alert alert-success\" role=\"alert\"> <strong>Success!</strong> Book successfully added. </div>");
+		} catch (SQLException e) {
+			model.addAttribute("message",
+					"<div class=\"alert alert-danger\" role=\"alert\"> <strong>Oops!</strong> Something went wrong. </div>");
+			e.printStackTrace();
+		}
+		return "adminBookManage";
+	}
 
 }

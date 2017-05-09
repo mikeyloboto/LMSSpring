@@ -39,26 +39,7 @@ public class AdminController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return "adminBookManage";
-		
-		
-//		@Autowired
-//		AdminService adminService;
-//		Integer bookCount = adminService.getBookCount();
-//		Integer numOfPages = 0;
-//		if (bookCount % 10 > 0) {
-//			numOfPages = bookCount / 10 + 1;
-//		} else {
-//			numOfPages = bookCount / 10;
-//		}
-//		List<Book> books = new ArrayList<>();
-//		//System.out.println(request.getParameter("pageNo"));
-//		if (request.getParameter("pageNo") != null) {
-//			books = adminService.getAllBooks(Integer.parseInt((String) request.getParameter("pageNo")));
-//		} else {
-//			books = adminService.getAllBooks(1);
-//		}
 	}
 	
 	@RequestMapping(value = "/adminBorrowerManage", method = RequestMethod.GET)

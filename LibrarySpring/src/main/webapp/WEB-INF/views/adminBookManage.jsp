@@ -1,13 +1,5 @@
 <%@include file="include.html"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Book"%>
 
-
-<%
-	Integer bookCount = (Integer)request.getAttribute("bookCount");
-	List<Book> books = (List<Book>)request.getAttribute("books");
-%>
 ${message}
 <script>
 	function searchBook(page) {
@@ -40,7 +32,7 @@ ${message}
 <div class="container">
 	<div>
 		<button type="button" class="btn btn-success" data-toggle="modal"
-			data-target="#editBookModal" href="adminBookAdd.jsp">Add New
+			data-target="#editBookModal" href="adminBookAdd">Add New
 			Book</button>
 	<div class="page-header">
 		<h1>List of Existing Books in LMS</h1>
@@ -72,12 +64,6 @@ ${message}
 </div>
 
 <div class="modal fade bs-example-modal-lg" id="editBookModal"
-	tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">....</div>
-	</div>
-</div>
-<div class="modal fade bs-example-modal-lg" id="addBookModal"
 	tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">....</div>

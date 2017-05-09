@@ -1,13 +1,20 @@
 package com.gcit.library.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.gcit.library.entity.Book;
 import com.gcit.library.entity.Branch;
+import com.mysql.jdbc.Statement;
 
 public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
@@ -17,8 +24,17 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 	}
 
 	public Integer addBookWithID(Book book) throws ClassNotFoundException, SQLException {
-		return template.update("insert into tbl_book (title, pubId) values (?, ?)",
-				new Object[] { book.getTitle(), book.getPublisher().getPublisherId() });
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement("insert into tbl_book (title, pubId) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
+				ps.setObject(1, book.getTitle());
+				ps.setObject(2, book.getPublisher().getPublisherId());
+				return ps;
+			}
+		}, holder);
+		return holder.getKey().intValue();
 	}
 
 	public void addBookAuthors(Integer bookId, Integer authorId) throws ClassNotFoundException, SQLException {
@@ -35,7 +51,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 	}
 
 	public void deleteBook(Integer bookId) throws ClassNotFoundException, SQLException {
-		System.out.println("deleting");
+		// System.out.println("deleting");
 		template.update("delete from tbl_book where bookId = ?", new Object[] { bookId });
 	}
 
