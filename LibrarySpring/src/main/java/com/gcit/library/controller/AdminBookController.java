@@ -75,7 +75,7 @@ public class AdminBookController {
 				strBuf.append("<td>" + a.getGenreList() + "</td><td>" + a.getPublisher().getPublisherName() + "</td>");
 
 				strBuf.append("<td><button type=\"button\" class=\"btn btn-primary\""
-						+ " data-toggle=\"modal\" data-target=\"#editBookModal\"" + " href=\"adminBookEdit?bookId="
+						+ " data-toggle=\"modal\" data-target=\"#bookModal\"" + " href=\"adminBookEdit?bookId="
 						+ a.getBookId() + "\">Update</button> ");
 				strBuf.append("<a type=\"button\" class=\"btn btn-danger\"" + " href=\"removeBook?bookId="
 						+ a.getBookId() + "\">Delete</a></td></tr>");

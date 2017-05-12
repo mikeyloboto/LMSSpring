@@ -25,6 +25,11 @@ public class HomeController {
 		return "index";
 	}
 	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String indexHard(Locale locale, Model model) {
+		return "index";
+	}
+	
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String admin(Locale locale, Model model) {
 		return "admin";

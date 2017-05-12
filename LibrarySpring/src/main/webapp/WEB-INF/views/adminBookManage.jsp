@@ -25,14 +25,14 @@ ${message}
 	}
 </script>
 <ol class="breadcrumb">
-  <li><a href="index.jsp">Home</a></li>
-  <li><a href="admin.jsp">Administrator</a></li>
+  <li><a href="index">Home</a></li>
+  <li><a href="admin">Administrator</a></li>
   <li class="active">Book Management</li>
 </ol>
 <div class="container">
 	<div>
 		<button type="button" class="btn btn-success" data-toggle="modal"
-			data-target="#editBookModal" href="adminBookAdd">Add New
+			data-target="#bookModal" href="adminBookAdd">Add New
 			Book</button>
 	<div class="page-header">
 		<h1>List of Existing Books in LMS</h1>
@@ -63,7 +63,7 @@ ${message}
 	</table>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="editBookModal"
+<div class="modal fade bs-example-modal-lg" id="bookModal"
 	tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">....</div>
