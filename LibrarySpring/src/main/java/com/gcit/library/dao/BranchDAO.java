@@ -23,11 +23,11 @@ public class BranchDAO extends BaseDAO implements ResultSetExtractor<List<Branch
 
 	public void updateBranch(Branch branch) throws ClassNotFoundException, SQLException {
 		template.update("update tbl_library_branch set branchName = ?, branchAddress = ? where branchId = ?",
-				new Object[] { branch.getBranchName(), branch.getBranchAddress(), branch.getBranchNo() });
+				new Object[] { branch.getBranchName(), branch.getBranchAddress(), branch.getBranchId() });
 	}
 
 	public void deleteBranch(Branch branch) throws ClassNotFoundException, SQLException {
-		template.update("delete from tbl_library_branch where branchId = ?", new Object[] { branch.getBranchNo() });
+		template.update("delete from tbl_library_branch where branchId = ?", new Object[] { branch.getBranchId() });
 	}
 
 	public void deleteBranch(Integer branchId) throws ClassNotFoundException, SQLException {
@@ -39,7 +39,7 @@ public class BranchDAO extends BaseDAO implements ResultSetExtractor<List<Branch
 		List<Branch> branches = new ArrayList<>();
 		while (rs.next()) {
 			Branch b = new Branch();
-			b.setBranchNo(rs.getInt("branchId"));
+			b.setBranchId(rs.getInt("branchId"));
 			b.setBranchName(rs.getString("branchName"));
 			b.setBranchAddress(rs.getString("branchAddress"));
 			branches.add(b);

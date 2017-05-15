@@ -30,7 +30,7 @@ public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 		LocalDate due = LocalDate.now().plusDays(7);
 		Date dueDate = Date.valueOf(due);
 		template.update("insert into tbl_book_loans (bookId, branchId, cardNo, dateOut, dateIn, dueDate) values (?, ?, ?, CURTIME(), NULL, ?)",
-				new Object[] { loan.getBook().getBookId(), loan.getBranch().getBranchNo(),
+				new Object[] { loan.getBook().getBookId(), loan.getBranch().getBranchId(),
 						loan.getBorrower().getCardNo(), dueDate });
 	}
 
@@ -44,19 +44,19 @@ public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 		
 		template.update("update tbl_book_loans set dueDate = ?, dateIn = ? where bookId = ? and branchId = ? and cardNo = ? and dateOut = ?",
 				new Object[] { Date.valueOf(loan.getDateDue()), dateIn,
-						loan.getBook().getBookId(), loan.getBranch().getBranchNo(), loan.getBorrower().getCardNo(),
+						loan.getBook().getBookId(), loan.getBranch().getBranchId(), loan.getBorrower().getCardNo(),
 						Timestamp.valueOf(loan.getDateOut()) });
 	}
 	
 	public void closeLoan(Loan loan) throws ClassNotFoundException, SQLException {
 		template.update("update tbl_book_loans set dateIn = CURDATE() where bookId = ? and branchId = ? and cardNo = ? and dateOut = ?",
-				new Object[] {loan.getBook().getBookId(), loan.getBranch().getBranchNo(), loan.getBorrower().getCardNo(),
+				new Object[] {loan.getBook().getBookId(), loan.getBranch().getBranchId(), loan.getBorrower().getCardNo(),
 						Timestamp.valueOf(loan.getDateOut()) });
 	}
 
 	public void deleteLoan(Loan loan) throws ClassNotFoundException, SQLException {
 		template.update("delete from tbl_book_loans where bookId = ? and branchNo = ? and cardNo = ? and dateOut = ?",
-				new Object[] { loan.getBook().getBookId(), loan.getBranch().getBranchNo(),
+				new Object[] { loan.getBook().getBookId(), loan.getBranch().getBranchId(),
 						loan.getBorrower().getCardNo(), Timestamp.valueOf(loan.getDateOut()) });
 	}
 
@@ -100,7 +100,7 @@ public class LoanDAO extends BaseDAO implements ResultSetExtractor<List<Loan>>{
 	}
 
 	public Loan expandLoan(Loan loan) throws ClassNotFoundException, SQLException {
-		return template.query("select * from tbl_book_loans where cardNo = ? and branchId = ? and bookId = ? and dateOut = ?", new Object[] {loan.getBorrower().getCardNo(), loan.getBranch().getBranchNo(), loan.getBook().getBookId(), Timestamp.valueOf(loan.getDateOut())}, this).get(0);
+		return template.query("select * from tbl_book_loans where cardNo = ? and branchId = ? and bookId = ? and dateOut = ?", new Object[] {loan.getBorrower().getCardNo(), loan.getBranch().getBranchId(), loan.getBook().getBookId(), Timestamp.valueOf(loan.getDateOut())}, this).get(0);
 	}
 
 }

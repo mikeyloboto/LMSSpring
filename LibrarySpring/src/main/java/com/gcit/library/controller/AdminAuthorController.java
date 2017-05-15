@@ -130,6 +130,9 @@ public class AdminAuthorController {
 		return "adminAuthorManage";
 	}
 
+	/**
+	 * Adds new author with a provied name
+	 */
 	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST)
 	private String addAuthor(@RequestParam("authorName") String authorName, Locale locale, Model model) {
 		// TODO Auto-generated method stub

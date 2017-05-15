@@ -1,14 +1,3 @@
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Author"%>
-<%@page import="com.gcit.library.entity.Book"%>
-<%@page import="com.gcit.library.entity.Genre"%>
-<%@page import="com.gcit.library.entity.Publisher"%>
-<%@page import="com.gcit.library.service.AdminService"%>
-<%
-	AdminService service = new AdminService();
-	Genre genre = service.getGenreFromID(Integer.parseInt(request.getParameter("genreId"))); 
-	//System.out.println("New Modal Init");
-%>
 <div>
 	
 	<div class="modal-header">
@@ -16,14 +5,14 @@
 			aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h4 class="modal-title">Edit <%=genre.getGenreName() %></h4>
+		<h4 class="modal-title">Edit ${genreName }</h4>
 	</div>
 	<form action="editGenre" method="post">
 		<div class="modal-body">
 			<p>Enter new name for genre:</p>
-			<input type="hidden" name="genreId" value="<%=genre.getGenreId()%>">
+			<input type="hidden" name="genreId" value="${genreId }">
 			<input class="form-control" type="text" name="genreName"
-				required="required" value="<%=genre.getGenreName()%>"> <br />
+				required="required" value="${genreName }"> <br />
 			<!-- Put shite here -->
 
 		</div>

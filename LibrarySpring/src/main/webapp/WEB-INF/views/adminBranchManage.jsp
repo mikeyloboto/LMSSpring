@@ -1,33 +1,11 @@
 <%@include file="include.html"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Branch"%>
-<%@page import="com.gcit.library.service.AdminService"%>
 
-
-<%
-	AdminService service = new AdminService();
-	Integer branchCount = service.getBranchCount();
-	Integer numOfPages = 0;
-	if (branchCount % 10 > 0) {
-		numOfPages = branchCount / 10 + 1;
-	} else {
-		numOfPages = branchCount / 10;
-	}
-	List<Branch> branches = new ArrayList<>();
-	//System.out.println(request.getParameter("pageNo"));
-	if (request.getParameter("pageNo") != null) {
-		branches = service.getAllBranches(Integer.parseInt((String) request.getParameter("pageNo")));
-	} else {
-		branches = service.getAllBranches(1);
-	}
-%>
 ${message}
 <script>
 	function searchBranch(page) {
 
 		$.ajax({
-			url : "searchBranches",
+			url : "searchBranch",
 			data : {
 				searchString : $('#searchString').val(),
 				pageNo : page
@@ -41,22 +19,15 @@ ${message}
 		})
 	}
 </script>
-<script>
-	function setPageNo(p) {
-		//var but = document.getElementById('#pageNo')
-		//but.value = p;
-		searchBranch(p);
-	}
-</script>
 <ol class="breadcrumb">
-	<li><a href="index.jsp">Home</a></li>
-	<li><a href="admin.jsp">Administrator</a></li>
+	<li><a href="index">Home</a></li>
+	<li><a href="admin">Administrator</a></li>
 	<li class="active">Branch Management</li>
 </ol>
 <div class="container">
 	<div>
 		<button type="button" class="btn btn-success" data-toggle="modal"
-			data-target="#addBranchModal" href="adminBranchAdd.jsp">Add
+			data-target="#branchModal" href="adminBranchAdd">Add
 			New Branch</button>
 		<div class="page-header">
 			<h1>List of Existing Branches in LMS</h1>
@@ -86,13 +57,7 @@ ${message}
 		</table>
 	</div>
 
-	<div class="modal fade bs-example-modal-lg" id="editBranchModal"
-		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">....</div>
-		</div>
-	</div>
-	<div class="modal fade bs-example-modal-lg" id="addBranchModal"
+	<div class="modal fade bs-example-modal-lg" id="branchModal"
 		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">....</div>

@@ -1,15 +1,3 @@
-<%@page import="java.util.List" %>
-<%@page import="com.gcit.library.entity.Author"%>
-<%@page import="com.gcit.library.entity.Book"%>
-<%@page import="com.gcit.library.entity.Genre"%>
-<%@page import="com.gcit.library.entity.Publisher"%>
-<%@page import="com.gcit.library.service.AdminService"%>
-<%
-	AdminService service = new AdminService();
-	//Integer bookId = Integer.parseInt(request.getParameter("bookId"));
-	//Book book = service.getBookFromID(bookId);
-	//System.out.println("New Modal Init");
-%>
 <div>
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"

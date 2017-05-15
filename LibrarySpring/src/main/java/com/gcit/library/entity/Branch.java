@@ -16,14 +16,14 @@ public class Branch implements Serializable{
 	/**
 	 * @return the branchNo
 	 */
-	public Integer getBranchNo() {
+	public Integer getBranchId() {
 		return branchNo;
 	}
 	/**
 	 * @param branchNo the branchNo to set
 	 */
-	public void setBranchNo(Integer branchNo) {
-		this.branchNo = branchNo;
+	public void setBranchId(Integer branchId) {
+		this.branchNo = branchId;
 	}
 	/**
 	 * @return the branchName

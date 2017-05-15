@@ -57,7 +57,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 	public Integer getBookCopies(Book book, Branch branch) throws ClassNotFoundException, SQLException {
 		return template.queryForObject("select noOfCopies from tbl_book_copies where bookId = ? and branchId = ?",
-				new Object[] { book.getBookId(), branch.getBranchNo() }, Integer.class);
+				new Object[] { book.getBookId(), branch.getBranchId() }, Integer.class);
 	}
 
 	public List<Book> readBookListInBranch(Branch branch, Integer pageNo) {
@@ -65,7 +65,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 
 		return template.query(
 				"select * from tbl_book where bookId in (select bookId from tbl_book_copies where branchId = ?  and noOfCopies > 0)",
-				new Object[] { branch.getBranchNo() }, this);
+				new Object[] { branch.getBranchId() }, this);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>> {
 	public Integer readBookCopiesCountInBranch(Branch branch) throws ClassNotFoundException, SQLException {
 		return template.queryForObject(
 				"select count(*) as COUNT from tbl_book_copies where branchId = ? and noOfCopies > 0",
-				new Object[] { branch.getBranchNo() }, Integer.class);
+				new Object[] { branch.getBranchId() }, Integer.class);
 	}
 
 	public List<Book> readBookFromName(String string, Integer pageNo) throws ClassNotFoundException, SQLException {

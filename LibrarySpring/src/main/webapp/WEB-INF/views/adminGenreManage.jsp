@@ -1,33 +1,11 @@
 <%@include file="include.html"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Genre"%>
-<%@page import="com.gcit.library.service.AdminService"%>
 
-
-<%
-	AdminService service = new AdminService();
-	Integer genreCount = service.getGenreCount();
-	Integer numOfPages = 0;
-	if (genreCount % 10 > 0) {
-		numOfPages = genreCount / 10 + 1;
-	} else {
-		numOfPages = genreCount / 10;
-	}
-	List<Genre> genres = new ArrayList<>();
-	//System.out.println(request.getParameter("pageNo"));
-	if (request.getParameter("pageNo") != null) {
-		genres = service.getAllGenres(Integer.parseInt((String) request.getParameter("pageNo")));
-	} else {
-		genres = service.getAllGenres(1);
-	}
-%>
 ${message}
 <script>
 	function searchGenre(page) {
 
 		$.ajax({
-			url : "searchGenres",
+			url : "searchGenre",
 			data : {
 				searchString : $('#searchString').val(),
 				pageNo : page
@@ -41,22 +19,15 @@ ${message}
 		})
 	}
 </script>
-<script>
-	function setPageNo(p) {
-		//var but = document.getElementById('#pageNo')
-		//but.value = p;
-		searchGenre(p);
-	}
-</script>
 <ol class="breadcrumb">
-	<li><a href="index.jsp">Home</a></li>
-	<li><a href="admin.jsp">Administrator</a></li>
+	<li><a href="index">Home</a></li>
+	<li><a href="admin">Administrator</a></li>
 	<li class="active">Genre Management</li>
 </ol>
 <div class="container">
 	<div>
 		<button type="button" class="btn btn-success" data-toggle="modal"
-			data-target="#addGenreModal" href="adminGenreAdd.jsp">Add
+			data-target="#genreModal" href="adminGenreAdd">Add
 			New Genre</button>
 		<div class="page-header">
 			<h1>List of Existing Genres in LMS</h1>
@@ -85,13 +56,7 @@ ${message}
 		</table>
 	</div>
 
-	<div class="modal fade bs-example-modal-lg" id="editGenreModal"
-		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">....</div>
-		</div>
-	</div>
-	<div class="modal fade bs-example-modal-lg" id="addGenreModal"
+	<div class="modal fade bs-example-modal-lg" id="genreModal"
 		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">....</div>

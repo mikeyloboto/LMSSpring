@@ -130,7 +130,7 @@ public class BorrowerService {
 	public void closeLoan(Integer newBranch, Loan g) throws SQLException {
 		try {
 			Branch branch = new Branch();
-			branch.setBranchNo(newBranch);
+			branch.setBranchId(newBranch);
 			ldao.closeLoan(g);
 			cdao.incrementCopies(branch, g.getBook(), 1);
 		} catch (ClassNotFoundException | SQLException e) {
