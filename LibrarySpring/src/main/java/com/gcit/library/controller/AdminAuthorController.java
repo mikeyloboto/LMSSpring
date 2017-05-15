@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gcit.library.entity.Author;
 import com.gcit.library.service.AdminService;
 
-// @WebServlet({ "/addBook", "/editBook", "/removeBook", "/searchBooks" })
 @Controller
 public class AdminAuthorController {
 
@@ -90,7 +89,6 @@ public class AdminAuthorController {
 			model.addAttribute("authorName", auth.getAuthorName());
 			model.addAttribute("authorId", auth.getAuthorId());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "adminAuthorEdit";
@@ -98,7 +96,6 @@ public class AdminAuthorController {
 
 	@RequestMapping(value = "/removeAuthor", method = RequestMethod.GET)
 	private String removeAuthor(@RequestParam("authorId") Integer authorId, Locale locale, Model model) {
-		// TODO Auto-generated method stub
 		try {
 			adminService.removeAuthor(authorId);
 			model.addAttribute("message",
@@ -135,7 +132,6 @@ public class AdminAuthorController {
 	 */
 	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST)
 	private String addAuthor(@RequestParam("authorName") String authorName, Locale locale, Model model) {
-		// TODO Auto-generated method stub
 		Author author = new Author();
 		author.setAuthorName(authorName);
 

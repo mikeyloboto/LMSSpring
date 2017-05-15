@@ -21,10 +21,6 @@ import com.gcit.library.entity.Genre;
 import com.gcit.library.entity.Publisher;
 import com.gcit.library.service.AdminService;
 
-/**
- * Test Controller, will probably have to rewrite alot of that shite
- */
-// @WebServlet({ "/addBook", "/editBook", "/removeBook", "/searchBooks" })
 @Controller
 public class AdminBookController {
 
@@ -111,7 +107,6 @@ public class AdminBookController {
 			model.addAttribute("publishers", publishersBuffer.toString());
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "adminBookAdd";
@@ -143,7 +138,6 @@ public class AdminBookController {
 			model.addAttribute("publishers", publishersBuffer.toString());
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "adminBookEdit";
@@ -151,7 +145,6 @@ public class AdminBookController {
 
 	@RequestMapping(value = "/removeBook", method = RequestMethod.GET)
 	private String removeBook(@RequestParam("bookId") Integer bookId, Locale locale, Model model) {
-		// TODO Auto-generated method stub
 		try {
 			adminService.removeBook(bookId);
 			model.addAttribute("message",
@@ -217,7 +210,6 @@ public class AdminBookController {
 	private String addBook(@RequestParam("bookName") String bookName, @RequestParam("authors") String[] authorIds,
 			@RequestParam("genres") String[] genreIds, @RequestParam("publisher") Integer publisher, Locale locale,
 			Model model) {
-		// TODO Auto-generated method stub
 		Book book = new Book();
 		book.setTitle(bookName);
 		List<Author> authors = new ArrayList<>();

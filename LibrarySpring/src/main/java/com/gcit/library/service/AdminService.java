@@ -183,7 +183,11 @@ public class AdminService {
 	@Transactional
 	public List<Loan> getAllLoans(Integer pageNo) throws SQLException {
 		try {
-			return ldao.readAllLoans(pageNo);
+			List<Loan> loans = ldao.readAllLoans(pageNo);
+			for (Loan l : loans) {
+				processBook(l.getBook());
+			}
+			return loans;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -575,6 +579,15 @@ public class AdminService {
 	public void modLoan(Loan g) throws SQLException {
 		try {
 			ldao.updateLoan(g);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Transactional
+	public void closeLoan(Loan g) throws SQLException {
+		try {
+			ldao.closeLoan(g);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

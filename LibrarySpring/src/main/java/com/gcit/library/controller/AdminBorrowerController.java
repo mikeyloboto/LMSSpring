@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gcit.library.entity.Borrower;
 import com.gcit.library.service.AdminService;
 
-// @WebServlet({ "/addBook", "/editBook", "/removeBook", "/searchBooks" })
 @Controller
 public class AdminBorrowerController {
 

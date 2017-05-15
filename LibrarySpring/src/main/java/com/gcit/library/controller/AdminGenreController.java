@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gcit.library.entity.Genre;
 import com.gcit.library.service.AdminService;
 
-// @WebServlet({ "/addBook", "/editBook", "/removeBook", "/searchBooks" })
 @Controller
 public class AdminGenreController {
 
@@ -92,7 +91,6 @@ public class AdminGenreController {
 			model.addAttribute("genreName", auth.getGenreName());
 			model.addAttribute("genreId", auth.getGenreId());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "adminGenreEdit";
@@ -100,7 +98,6 @@ public class AdminGenreController {
 
 	@RequestMapping(value = "/removeGenre", method = RequestMethod.GET)
 	private String removeGenre(@RequestParam("genreId") Integer genreId, Locale locale, Model model) {
-		// TODO Auto-generated method stub
 		try {
 			adminService.removeGenre(genreId);
 			model.addAttribute("message",
@@ -137,7 +134,6 @@ public class AdminGenreController {
 	 */
 	@RequestMapping(value = "/addGenre", method = RequestMethod.POST)
 	private String addGenre(@RequestParam("genreName") String genreName, Locale locale, Model model) {
-		// TODO Auto-generated method stub
 		Genre genre = new Genre();
 		genre.setGenreName(genreName);
 

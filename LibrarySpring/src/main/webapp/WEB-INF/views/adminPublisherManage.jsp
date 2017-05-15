@@ -1,33 +1,11 @@
 <%@include file="include.html"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="com.gcit.library.entity.Publisher"%>
-<%@page import="com.gcit.library.service.AdminService"%>
 
-
-<%
-	AdminService service = new AdminService();
-	Integer publisherCount = service.getPublisherCount();
-	Integer numOfPages = 0;
-	if (publisherCount % 10 > 0) {
-		numOfPages = publisherCount / 10 + 1;
-	} else {
-		numOfPages = publisherCount / 10;
-	}
-	List<Publisher> publishers = new ArrayList<>();
-	//System.out.println(request.getParameter("pageNo"));
-	if (request.getParameter("pageNo") != null) {
-		publishers = service.getAllPublishers(Integer.parseInt((String) request.getParameter("pageNo")));
-	} else {
-		publishers = service.getAllPublishers(1);
-	}
-%>
 ${message}
 <script>
 	function searchPublisher(page) {
 
 		$.ajax({
-			url : "searchPublishers",
+			url : "searchPublisher",
 			data : {
 				searchString : $('#searchString').val(),
 				pageNo : page
@@ -41,23 +19,16 @@ ${message}
 		})
 	}
 </script>
-<script>
-	function setPageNo(p) {
-		//var but = document.getElementById('#pageNo')
-		//but.value = p;
-		searchPublisher(p);
-	}
-</script>
 <input type="hidden" name="pageNo" id="pageNo" value="1">
 <ol class="breadcrumb">
-	<li><a href="index.jsp">Home</a></li>
-	<li><a href="admin.jsp">Administrator</a></li>
+	<li><a href="index">Home</a></li>
+	<li><a href="admin">Administrator</a></li>
 	<li class="active">Publisher Management</li>
 </ol>
 <div class="container">
 	<div>
 		<button type="button" class="btn btn-success" data-toggle="modal"
-			data-target="#addPublisherModal" href="adminPublisherAdd.jsp">Add
+			data-target="#publisherModal" href="adminPublisherAdd">Add
 			New Publisher</button>
 		<div class="page-header">
 			<h1>List of Existing Publishers in LMS</h1>
@@ -88,13 +59,7 @@ ${message}
 		</table>
 	</div>
 
-	<div class="modal fade bs-example-modal-lg" id="editPublisherModal"
-		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">....</div>
-		</div>
-	</div>
-	<div class="modal fade bs-example-modal-lg" id="addPublisherModal"
+	<div class="modal fade bs-example-modal-lg" id="publisherModal"
 		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">....</div>

@@ -19,7 +19,6 @@ import com.gcit.library.entity.Author;
 import com.gcit.library.entity.Branch;
 import com.gcit.library.service.AdminService;
 
-// @WebServlet({ "/addBook", "/editBook", "/removeBook", "/searchBooks" })
 @Controller
 public class AdminBranchController {
 
